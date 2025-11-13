@@ -1,0 +1,4 @@
+region          = "eu-west-1"
+project_name    = "personal-site"
+domain_name     = "example.com"
+aws_account_id  = "YOUR_AWS_ACCOUNT_ID"
