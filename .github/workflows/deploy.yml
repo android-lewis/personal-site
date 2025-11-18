@@ -3,61 +3,40 @@ name: Build and Deploy
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: 20
+          cache: npm
+      
+      - run: npm ci
+      - run: npm run build
+      - run: npm run typecheck
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build site
-        run: npm run build
-
-      - name: Type check
-        run: npm run typecheck
-
-      # Upload build artifacts for review
-      - name: Upload build artifacts
+      - name: Upload public folder
         uses: actions/upload-artifact@v4
-        if: always()
         with:
-          name: gatsby-build
+          name: public
           path: public/
-          retention-days: 5
+          retention-days: 3
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    
+    if: github.ref == 'refs/heads/main'
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
         with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build site
-        run: npm run build
+          name: public
+          path: public/
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -66,27 +45,28 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Sync to S3
+      - name: Upload HTML + page-data (no-cache)
         run: |
           aws s3 sync public/ s3://${{ secrets.S3_BUCKET_NAME }} \
-            --delete \
-            --cache-control 'max-age=0' \
-            --exclude '*' \
-            --include 'index.html' \
-            --include 'sitemap.xml' \
-            --include 'robots.txt'
-          
-          aws s3 sync public/ s3://${{ secrets.S3_BUCKET_NAME }} \
-            --cache-control 'max-age=31536000' \
-            --include 'static/*' \
-            --exclude '*'
+            --exclude "*" \
+            --include "*.html" \
+            --include "page-data/*" \
+            --include "sitemap.xml" \
+            --include "robots.txt" \
+            --cache-control "no-cache" \
+            --delete
 
-      - name: Invalidate CloudFront distribution
+      - name: Upload static assets (1 year cache)
+        run: |
+          aws s3 sync public/ s3://${{ secrets.S3_BUCKET_NAME }} \
+            --exclude "*" \
+            --include "static/*" \
+            --include "*.js" \
+            --include "*.css" \
+            --cache-control "max-age=31536000, public"
+
+      - name: Invalidate CloudFront
         run: |
           aws cloudfront create-invalidation \
             --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
             --paths "/*"
-
-      - name: Deployment notification
-        run: |
-          echo "✓ Deployed to https://${{ secrets.SITE_DOMAIN }}"
