@@ -75,6 +75,7 @@ export const BackgroundBeams = React.memo(
           width="100%"
           height="100%"
           viewBox="0 0 696 316"
+          preserveAspectRatio="none"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -119,10 +120,10 @@ export const BackgroundBeams = React.memo(
                   delay: Math.random() * 10,
                 }}
               >
-                <stop stopColor="#18CCFC" stopOpacity="0" />
-                <stop stopColor="#18CCFC" />
-                <stop offset="32.5%" stopColor="#6344F5" />
-                <stop offset="100%" stopColor="#AE48FF" stopOpacity="0" />
+                <stop stopColor="#2563eb" stopOpacity="0" />
+                <stop stopColor="#2563eb" />
+                <stop offset="32.5%" stopColor="#38bdf8" />
+                <stop offset="100%" stopColor="#0284c7" stopOpacity="0" />
               </motion.linearGradient>
             ))}
 

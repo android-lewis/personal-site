@@ -13,7 +13,7 @@ const Projects = () => {
         viewport={{ once: true }}
       >
         <motion.h2
-          className="text-4xl font-bold mb-12 text-foreground"
+          className="text-4xl font-bold mb-12 text-slate-600"
           variants={ANIMATION_VARIANTS.itemLeftSlide}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -29,15 +29,15 @@ const Projects = () => {
               href={project.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="border border-border rounded-lg p-6 group cursor-pointer bg-background"
+              className="border border-primary/20 rounded-lg p-6 group cursor-pointer"
               variants={ANIMATION_VARIANTS.itemBottomSlide}
               whileHover={{ y: -10, boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2)' }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-accent transition-colors">
+              <h3 className="text-xl font-bold text-slate-600 mb-3 group-hover:text-accent transition-colors">
                 {project.title}
               </h3>
-              <p className="text-muted-foreground mb-4 leading-relaxed">{project.description}</p>
+              <p className="text-slate-500 mb-4 leading-relaxed">{project.description}</p>
               <motion.div
                 className="flex flex-wrap gap-2"
                 variants={ANIMATION_VARIANTS.container}

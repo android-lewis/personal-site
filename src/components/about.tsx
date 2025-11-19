@@ -13,12 +13,12 @@ const About = () => {
         viewport={{ once: true, amount: 0.3 }}
       >
         <motion.h2
-          className="text-4xl font-bold mb-8 text-foreground"
+          className="text-4xl font-bold mb-8 text-slate-600"
           variants={ANIMATION_VARIANTS.itemLeftSlide}
         >
           About
         </motion.h2>
-        <motion.div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
+        <motion.div className="space-y-6 text-lg text-slate-500 leading-relaxed">
           <motion.p variants={ANIMATION_VARIANTS.itemLeftSlide}>
             Hi, I'm Lewis - a software engineer passionate about building smart, efficient systems. I love designing and implementing solutions that make technology work seamlessly, whether that's through PLC's and robotics, or intuitive web applications and business software.
           </motion.p>

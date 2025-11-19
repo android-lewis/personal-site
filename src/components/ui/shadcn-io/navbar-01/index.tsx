@@ -18,13 +18,6 @@ import { cn } from '@/lib/utils';
 import { Link } from 'react-scroll';
 import { motion } from 'framer-motion';
 
-// Simple logo component for the navbar
-const Logo = (props: React.SVGAttributes<SVGElement>) => {
-  return (
-<></>
-  );
-};
-
 // Hamburger icon component
 const HamburgerIcon = ({ className, ...props }: React.SVGAttributes<SVGElement>) => (
   <svg
@@ -63,8 +56,6 @@ export interface Navbar01NavLink {
 }
 
 export interface Navbar01Props extends React.HTMLAttributes<HTMLElement> {
-  logo?: React.ReactNode;
-  logoHref?: string;
   navigationLinks?: Navbar01NavLink[];
   signInText?: string;
   signInHref?: string;
@@ -91,8 +82,6 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
   (
     {
       className,
-      logo = <Logo />,
-      logoHref = '#',
       navigationLinks = defaultNavigationLinks,
       signInText = 'Sign In',
       signInHref = '#signin',
@@ -143,7 +132,7 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
       <header
         ref={combinedRef}
         className={cn(
-          'sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 md:px-6 [&_*]:no-underline',
+          'sticky top-0 z-50 w-full border-b bg-slate-100 backdrop-blur supports-[backdrop-filter]:bg-slate-100/60 px-4 md:px-6 [&_*]:no-underline',
           className
         )}
         {...props}
@@ -156,7 +145,7 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
-                    className="group h-9 w-9 hover:bg-accent hover:text-accent-foreground"
+                    className="group h-9 w-9 hover:bg-slate-100 hover:text-slate-500"
                     variant="ghost"
                     size="icon"
                   >
@@ -170,7 +159,7 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
                       <NavigationMenuItem key={index} className="w-full">
                         <Link
                           to={link.href}
-                          activeClass={"text-accent font-semibold pl-3"}
+                          activeClass={"text-slate-600 font-semibold pl-3"}
                           smooth={true}
                           isDynamic={true}
                           duration={500}
@@ -194,12 +183,8 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
             <div className="flex items-center gap-6">
               <button 
                 onClick={(e) => e.preventDefault()}
-                className="flex items-center space-x-2 text-primary hover:text-primary/90 transition-colors cursor-pointer"
-              >
-                <div className="text-2xl">
-                  {logo}
-                </div>
-              </button>
+                className="flex items-center space-x-2 text-slate-600 hover:text-slate-500 transition-colors cursor-pointer"
+              />
               {/* Navigation menu */}
               {!isMobile && (
                 <NavigationMenu className="flex">
@@ -208,7 +193,7 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
                     <NavigationMenuItem key={index}>
                         <Link
                           to={link.href}
-                          activeClass={"text-accent font-semibold pl-3"}
+                          activeClass={"text-slate-600 font-semibold pl-3"}
                           smooth={true}
                           duration={500}
                         >
@@ -238,7 +223,7 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
               href="https://github.com/android-lewis"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-accent transition-colors"
+              className="text-slate-600 hover:text-slate-500 transition-colors"
               aria-label="GitHub"
               variants={iconVariants}
               initial="rest"
@@ -252,7 +237,7 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
               href="https://linkedin.com/in/lewis-baston-24b772181"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-accent transition-colors"
+              className="text-slate-600 hover:text-slate-500 transition-colors"
               aria-label="LinkedIn"
               variants={iconVariants}
               initial="rest"
@@ -264,7 +249,7 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
             </motion.a>
             <motion.a
               href="mailto:lewis.baston@outlook.com"
-              className="text-muted-foreground hover:text-accent transition-colors"
+              className="text-slate-600 hover:text-slate-500 transition-colors"
               aria-label="Email"
               variants={iconVariants}
               initial="rest"
@@ -283,4 +268,4 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
 
 Navbar01.displayName = 'Navbar01';
 
-export { Logo, HamburgerIcon };
+export { HamburgerIcon };
